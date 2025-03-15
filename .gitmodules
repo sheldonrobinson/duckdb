@@ -4,3 +4,6 @@
 [submodule "extension/fts"]
 	path = extension/fts
 	url = https://github.com/duckdb/duckdb-fts.git
+[submodule "extension/sqlite"]
+	path = extension/sqlite
+	url = https://github.com/duckdb/duckdb-sqlite
