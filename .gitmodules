@@ -1,0 +1,6 @@
+[submodule "extension/vss"]
+	path = extension/vss
+	url = https://github.com/duckdb/duckdb-vss.git
+[submodule "extension/fts"]
+	path = extension/fts
+	url = https://github.com/duckdb/duckdb-fts.git
