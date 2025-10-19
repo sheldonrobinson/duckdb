@@ -9,7 +9,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 add_library(duckdb_fsst STATIC libfsst.cpp)
 
 target_include_directories(duckdb_fsst PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-s
+
 if(DUCKDB_INSTALL)
 	install(TARGETS duckdb_fsst
 			EXPORT "${DUCKDB_EXPORT_SET}"
