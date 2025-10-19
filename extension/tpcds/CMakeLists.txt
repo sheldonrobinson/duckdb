@@ -11,8 +11,10 @@ set(PARAMETERS "-warnings")
 build_loadable_extension(tpcds ${PARAMETERS} tpcds_extension.cpp
                          ${DSDGEN_OBJECT_FILES})
 
-install(
-  TARGETS tpcds_extension
-  EXPORT "${DUCKDB_EXPORT_SET}"
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(
+	  TARGETS tpcds_extension
+	  EXPORT "${DUCKDB_EXPORT_SET}"
+	  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+	  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()

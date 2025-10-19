@@ -31,7 +31,9 @@ add_library(duckdb_mbedtls STATIC
         library/sha1.cpp
         library/sha256.cpp)
 
-install(TARGETS duckdb_mbedtls
-        EXPORT "${DUCKDB_EXPORT_SET}"
-        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(TARGETS duckdb_mbedtls
+			EXPORT "${DUCKDB_EXPORT_SET}"
+			LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()

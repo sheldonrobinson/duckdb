@@ -96,9 +96,11 @@ target_include_directories(
   duckdb_re2
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-install(TARGETS duckdb_re2
-        EXPORT "${DUCKDB_EXPORT_SET}"
-        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(TARGETS duckdb_re2
+			EXPORT "${DUCKDB_EXPORT_SET}"
+			LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()
 
 disable_target_warnings(duckdb_re2)

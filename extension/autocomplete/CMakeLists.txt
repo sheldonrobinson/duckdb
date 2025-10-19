@@ -13,8 +13,10 @@ set(PARAMETERS "-warnings")
 build_loadable_extension(autocomplete ${PARAMETERS}
                          ${AUTOCOMPLETE_EXTENSION_FILES})
 
-install(
-  TARGETS autocomplete_extension
-  EXPORT "${DUCKDB_EXPORT_SET}"
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(
+	  TARGETS autocomplete_extension
+	  EXPORT "${DUCKDB_EXPORT_SET}"
+	  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+	  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()

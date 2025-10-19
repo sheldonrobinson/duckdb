@@ -41,8 +41,10 @@ set(PARAMETERS "-warnings")
 build_loadable_extension(json ${PARAMETERS} ${JSON_EXTENSION_FILES})
 target_link_libraries(json_loadable_extension duckdb_yyjson)
 
-install(
-  TARGETS json_extension
-  EXPORT "${DUCKDB_EXPORT_SET}"
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(
+	  TARGETS json_extension
+	  EXPORT "${DUCKDB_EXPORT_SET}"
+	  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+	  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()

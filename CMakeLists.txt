@@ -451,6 +451,7 @@ option(BUILD_RDTSC "Enable the rdtsc instruction." FALSE)
 option(SMALLER_BINARY "Produce a smaller binary by trimming specialized code paths. This can negatively affect performance." FALSE)
 option(NATIVE_ARCH "Compile targeting the native architecture" FALSE)
 option(OVERRIDE_NEW_DELETE "Override C++ new/delete (only when jemalloc is enabled)" FALSE)
+option(DUCKDB_INSTALL "Install applications and library" OFF)
 option(SET_DUCKDB_LIBRARY_VERSION "Whether or not to set the DuckDB Library version and emit versioned shared libraries" FALSE)
 
 if(${BUILD_RDTSC})
@@ -1460,37 +1461,39 @@ if(NOT CLANG_TIDY)
   endif()
 endif()
 
-# Write the export set for build and install tree
-install(EXPORT "${DUCKDB_EXPORT_SET}" DESTINATION "${INSTALL_CMAKE_DIR}")
-export(EXPORT "${DUCKDB_EXPORT_SET}"
-       FILE "${PROJECT_BINARY_DIR}/${DUCKDB_EXPORT_SET}.cmake")
+if(DUCKDB_INSTALL)
+	# Write the export set for build and install tree
+	install(EXPORT "${DUCKDB_EXPORT_SET}" DESTINATION "${INSTALL_CMAKE_DIR}")
+	export(EXPORT "${DUCKDB_EXPORT_SET}"
+		   FILE "${PROJECT_BINARY_DIR}/${DUCKDB_EXPORT_SET}.cmake")
 
-# Only write the cmake package configuration if the templates exist
-set(CMAKE_CONFIG_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/DuckDBConfig.cmake.in")
-set(CMAKE_CONFIG_VERSION_TEMPLATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/DuckDBConfigVersion.cmake.in")
-if(EXISTS ${CMAKE_CONFIG_TEMPLATE} AND EXISTS ${CMAKE_CONFIG_VERSION_TEMPLATE})
+	# Only write the cmake package configuration if the templates exist
+	set(CMAKE_CONFIG_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/DuckDBConfig.cmake.in")
+	set(CMAKE_CONFIG_VERSION_TEMPLATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/DuckDBConfigVersion.cmake.in")
+	if(EXISTS ${CMAKE_CONFIG_TEMPLATE} AND EXISTS ${CMAKE_CONFIG_VERSION_TEMPLATE})
 
-  # Configure cmake package config for the build tree
-  set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src/include")
-  configure_file(${CMAKE_CONFIG_TEMPLATE}
-                 "${PROJECT_BINARY_DIR}/DuckDBConfig.cmake" @ONLY)
+	  # Configure cmake package config for the build tree
+	  set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src/include")
+	  configure_file(${CMAKE_CONFIG_TEMPLATE}
+					 "${PROJECT_BINARY_DIR}/DuckDBConfig.cmake" @ONLY)
 
-  # Configure cmake package config for the install tree
-  file(RELATIVE_PATH REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_CMAKE_DIR}"
-    "${CMAKE_INSTALL_PREFIX}/${INSTALL_INCLUDE_DIR}")
-  set(CONF_INCLUDE_DIRS "\${DuckDB_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-  configure_file(
-    ${CMAKE_CONFIG_TEMPLATE}
-    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DuckDBConfig.cmake" @ONLY)
+	  # Configure cmake package config for the install tree
+	  file(RELATIVE_PATH REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_CMAKE_DIR}"
+		"${CMAKE_INSTALL_PREFIX}/${INSTALL_INCLUDE_DIR}")
+	  set(CONF_INCLUDE_DIRS "\${DuckDB_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+	  configure_file(
+		${CMAKE_CONFIG_TEMPLATE}
+		"${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DuckDBConfig.cmake" @ONLY)
 
-  # Configure cmake package version for build and install tree
-  configure_file(${CMAKE_CONFIG_VERSION_TEMPLATE}
-                 "${PROJECT_BINARY_DIR}/DuckDBConfigVersion.cmake" @ONLY)
+	  # Configure cmake package version for build and install tree
+	  configure_file(${CMAKE_CONFIG_VERSION_TEMPLATE}
+					 "${PROJECT_BINARY_DIR}/DuckDBConfigVersion.cmake" @ONLY)
 
-  # Install the cmake package
-  install(
-    FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DuckDBConfig.cmake"
-          "${PROJECT_BINARY_DIR}/DuckDBConfigVersion.cmake"
-    DESTINATION "${INSTALL_CMAKE_DIR}")
+	  # Install the cmake package
+	  install(
+		FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DuckDBConfig.cmake"
+			  "${PROJECT_BINARY_DIR}/DuckDBConfigVersion.cmake"
+		DESTINATION "${INSTALL_CMAKE_DIR}")
+	endif()
 endif()

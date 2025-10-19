@@ -44,9 +44,11 @@ target_include_directories(
 		PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 set_target_properties(duckdb_zstd PROPERTIES EXPORT_NAME duckdb_duckdb_zstd)
 
-install(TARGETS duckdb_zstd
-        EXPORT "${DUCKDB_EXPORT_SET}"
-        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+if(DUCKDB_INSTALL)
+	install(TARGETS duckdb_zstd
+			EXPORT "${DUCKDB_EXPORT_SET}"
+			LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+			ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+endif()
 
 disable_target_warnings(duckdb_zstd)
