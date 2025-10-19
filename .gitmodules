@@ -1,0 +1,9 @@
+[submodule "extension_external/fts"]
+	path = extension_external/fts
+	url = https://github.com/sheldonrobinson/duckdb-fts.git
+[submodule "extension_external/vss"]
+	path = extension_external/vss
+	url = https://github.com/sheldonrobinson/duckdb-vss.git
+[submodule "extension_external/sqlite_scanner"]
+	path = extension_external/sqlite_scanner
+	url = https://github.com/sheldonrobinson/duckdb-sqlite.git
